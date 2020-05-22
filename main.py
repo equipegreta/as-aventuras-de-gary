@@ -81,19 +81,20 @@ while running:
     # se alguma tecla está pressionada
     if event.type == pygame.KEYDOWN:
         # se a tecla é esquerda ou direita
-        if event.key in pygame.K_LEFT:
+        if event.key == pygame.K_LEFT:
             playerX_change = -5
             armax_change = -5
-        elif event.key in pygame.K_RIGHT:
+        elif event.key == pygame.K_RIGHT:
             playerX_change = 5
             armax_change = 5
-        if event.type in pygame.K_w:
+    if event.type == pygame.KEYDOWN:
+        if event.type == pygame.K_w:
             cor = armaazul
-        elif event.type in pygame.K_a:
+        elif event.type == pygame.K_a:
             cor = armabranca
-        elif event.type in pygame.K_s:
+        elif event.type == pygame.K_s:
             cor = armapreta
-        elif event.type in pygame.K_d:
+        elif event.type == pygame.K_d:
             cor = armaverde
     if event.type == pygame.KEYUP:
         if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
