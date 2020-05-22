@@ -30,7 +30,11 @@ player_x = 370
 player_y = 500
 playerX_change = 0
 # lixeira / arma
-arma_img = pygame.image.load('lixeira.png')
+armaazul = 'azul.png'
+armabranca = 'branca.png'
+armapreta = 'preta.png'
+armaverde = 'verde.png'
+cor = armaazul
 arma_x = 370
 arma_y = 470
 armax_change = 0
@@ -49,8 +53,8 @@ def player(x, y):
     screen.blit(player_img, (x, y))  # (imagem, coordenadas)
 
 
-def arma(x, y):
-    screen.blit(arma_img, (x,y))
+def arma(cor, x, y):
+    return screen.blit(pygame.image.load(cor), (x,y))
 
 
 def enemy(x, y):
@@ -59,6 +63,7 @@ def enemy(x, y):
 
 def chao(x, y):
     screen.blit(chao_img, (x, y))
+
 
 # =-=-=-= GAME LOOP =-=-=-= #
 running = True
@@ -76,20 +81,26 @@ while running:
     # se alguma tecla está pressionada
     if event.type == pygame.KEYDOWN:
         # se a tecla é esquerda ou direita
-        if event.key == pygame.K_LEFT:
+        if event.key in pygame.K_LEFT:
             playerX_change = -5
             armax_change = -5
-        if event.key == pygame.K_RIGHT:
+        elif event.key in pygame.K_RIGHT:
             playerX_change = 5
             armax_change = 5
+        if event.type in pygame.K_w:
+            cor = armaazul
+        elif event.type in pygame.K_a:
+            cor = armabranca
+        elif event.type in pygame.K_s:
+            cor = armapreta
+        elif event.type in pygame.K_d:
+            cor = armaverde
     if event.type == pygame.KEYUP:
         if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
             playerX_change = 0
             armax_change = 0
     arma_x += armax_change
     player_x += playerX_change
-
-    # =-=-=-=-=-= MUDANDO A COR DA ARMA =-=-=-=-=-= #
 
     # =-=-=-=-=-=-=-=-= PARA O ELEMENTO NÃO SUMIR QUANDO ENCONTRAR A BORDA  =-=-=-=-=-=-=-=-= #
     # jogador
@@ -109,9 +120,9 @@ while running:
     # =-= ELEMENTOS =-=
     # precisam ser impressos após o screen fill e antes do display update
     player(player_x, player_y)
-    arma(arma_x, arma_y)
     enemy(enemy_x, enemy_y)
     chao(chao_x, chao_y)
+    arma(cor, arma_x, arma_y)
 
     # nada aparece se não tiver a função update
     pygame.display.update()
