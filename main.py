@@ -39,6 +39,10 @@ enemy_img = pygame.image.load('inimigo.png')
 enemy_x = random.randint(0, 800)
 enemy_y = 20
 enemyX_change = 3
+# chão
+chao_img = pygame.image.load('chao.png')
+chao_x = 0
+chao_y = 555
 
 
 def player(x, y):
@@ -52,6 +56,9 @@ def arma(x, y):
 def enemy(x, y):
     screen.blit(enemy_img, (x, y))
 
+
+def chao(x, y):
+    screen.blit(chao_img, (x, y))
 
 # =-=-=-= GAME LOOP =-=-=-= #
 running = True
@@ -69,10 +76,10 @@ while running:
     # se alguma tecla está pressionada
     if event.type == pygame.KEYDOWN:
         # se a tecla é esquerda ou direita
-        if event.key == pygame.K_LEFT or event.key == pygame.K_a:
+        if event.key == pygame.K_LEFT:
             playerX_change = -5
             armax_change = -5
-        if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
+        if event.key == pygame.K_RIGHT:
             playerX_change = 5
             armax_change = 5
     if event.type == pygame.KEYUP:
@@ -81,6 +88,8 @@ while running:
             armax_change = 0
     arma_x += armax_change
     player_x += playerX_change
+
+    # =-=-=-=-=-= MUDANDO A COR DA ARMA =-=-=-=-=-= #
 
     # =-=-=-=-=-=-=-=-= PARA O ELEMENTO NÃO SUMIR QUANDO ENCONTRAR A BORDA  =-=-=-=-=-=-=-=-= #
     # jogador
@@ -102,6 +111,7 @@ while running:
     player(player_x, player_y)
     arma(arma_x, arma_y)
     enemy(enemy_x, enemy_y)
+    chao(chao_x, chao_y)
 
     # nada aparece se não tiver a função update
     pygame.display.update()
