@@ -77,18 +77,18 @@ lixos_img = [papeis, organicos, reciclaveis, rejeitos]
 lixos_imgs = []
 lixo_x = []
 lixo_y = []
-lixox_change = []
 lixoy_change = []
-num_lixos = 1
+catou = 0
+ncatou = 0
 
-for i in range(num_lixos):
-    j = random.randint(0, 4)
+
+def gerar_lixo ():
+    j = random.randint(0, 3)
     k = random.randint(0, 1)
     lixos_imgs.append(pygame.image.load(lixos_img[j][k]))
     lixo_x.append(enemy_x)
     lixo_y.append(enemy_y)
-    lixox_change.append(2)
-    lixoy_change.append(5)
+    lixoy_change.append(2)
 
 
 def player(x, y):
@@ -109,7 +109,16 @@ def chao(x, y):
 
 def jogar_lixo(i, x, y):
     screen.blit(lixos_imgs[i], (x, y))
-
+def colisao_lixeira (xa,ya,xb,yb):
+    if (xa-xb)<=20 and (ya-yb)<=20 :
+        return True
+    else:
+        return False
+def colisão_chao (xa,xb) :
+    if xa >= xb :
+        return True
+    else:
+        return False
 
 # =-=-=-= GAME LOOP =-=-=-= #
 running = True
@@ -151,11 +160,12 @@ while running:
     player_x += playerX_change
 
     # =-=-=-=-=-=-=-=-= LIXOS =-=-=-=-=-=-=-=-= #
+    if random.randrange(0, 210) == 1:
+        gerar_lixo()
+    for i in range(len(lixos_imgs)):
+          lixo_y[i] += lixoy_change[i]
 
-    for i in range(num_lixos):
-        lixo_y[i] += lixoy_change[i]
-
-        jogar_lixo(i, lixo_x[i], lixo_y[i])
+          jogar_lixo(i, lixo_x[i], lixo_y[i])
 
     # =-=-=-=-=-=-=-=-= PARA O ELEMENTO NÃO SUMIR QUANDO ENCONTRAR A BORDA  =-=-=-=-=-=-=-=-= #
     # jogador
@@ -178,6 +188,17 @@ while running:
     enemy(enemy_x, enemy_y)
     chao(chao_x, chao_y)
     arma(m, arma_x, arma_y)
+    # checar colisões
+    for i in range(len(lixos_imgs)):
+       if colisao_lixeira(arma_x,arma_y,lixo_x[i],lixo_y[i]) :
+           catou+=1
+           lixos_imgs.pop(i)
+           lixo_x.pop(i)
+           lixo_y.pop(i)
+           lixoy_change.pop(i)
+     #  elif colisão_chao(arma_x,lixo_x[i]):
+     #       ncatou +=1
+
 
     # nada aparece se não tiver a função update
     pygame.display.update()
