@@ -55,17 +55,17 @@ chao_y = 555
 
 # lixo
 # azul - papel
-folha = 'folha.png'
-caderno = 'caderno.png'
+folha = pygame.image.load('folha.png')
+caderno = pygame.image.load('caderno.png')
 # branco - orgânico
-banana = 'banana.png'
-maca = 'maca.png'
+banana = pygame.image.load('banana.png')
+maca = pygame.image.load('maca.png')
 # verde - reciclável
-embalagem = 'embalagem.png'
-marmitaisopor = 'marmita.png'
+embalagem = pygame.image.load('embalagem.png')
+marmitaisopor = pygame.image.load('marmita.png')
 # preto - rejeito
-copo = 'copo.png'
-guardanapo = 'guardanapo.png'
+copo = pygame.image.load('copo.png')
+guardanapo = pygame.image.load('guardanapo.png')
 
 # separação
 papeis = [folha, caderno]
@@ -87,7 +87,7 @@ ncatou = 0
 def gerar_lixo ():
     j = random.randint(0, 3)
     k = random.randint(0, 1)
-    lixos_imgs.append(pygame.image.load(lixos_img[j][k]))
+    lixos_imgs.append(lixos_img[j][k])
     lixo_x.append(enemy_x)
     lixo_y.append(enemy_y)
     lixoy_change.append(2)
@@ -191,10 +191,11 @@ while running:
     chao(chao_x, chao_y)
     arma(m, arma_x, arma_y)
     # checar colisões
-    for i in range(len(lixos_imgs)):
+    for i,lixo in enumerate(lixos_imgs):
        if colisao_lixeira(arma_x,arma_y,lixo_x[i],lixo_y[i]) :
-           if m == 0 and papeis.count(lixos_imgs[0])== 1 :
-              catou+=1
+           screen.blit(lixo, (50,50))
+           if m == 0 and (lixo in papeis):
+              catou += 1
               lixos_imgs.pop(i)
               lixo_x.pop(i)
               lixo_y.pop(i)
