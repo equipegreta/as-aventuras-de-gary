@@ -1,6 +1,5 @@
 import pygame
 import random
-# import math
 
 # inicializando o pygame
 pygame.init()
@@ -76,13 +75,12 @@ rejeitos = [copo, guardanapo]
 lixos_img = [papeis, organicos, reciclaveis, rejeitos]
 # posicao etc
 lixos_imgs = []
-lixo_x = [enemy_x]
-lixo_y = [enemy_y]
+lixo_x = []
+lixo_y = []
 lixoy_change = []
 catou = 0
 catou_errado = 0
 ncatou = 0
-
 
 def gerar_lixo ():
     j = random.randint(0, 3)
@@ -112,7 +110,7 @@ def chao(x, y):
 def jogar_lixo(i, x, y):
     screen.blit(lixos_imgs[i], (x, y))
 def colisao_lixeira (xa,ya,xb,yb):
-    if (xa-xb)<=20 and (ya-yb)<=20 :
+    if abs(xa-xb)<=20 and (ya-yb)<=20 :
         return True
     else:
         return False
@@ -194,7 +192,7 @@ while running:
     for i,lixo in enumerate(lixos_imgs):
        if colisao_lixeira(arma_x,arma_y,lixo_x[i],lixo_y[i]) :
            screen.blit(lixo, (50,50))
-           if m == 0 and (lixo in papeis):
+           if m == 0 and papeis.count(lixos_imgs[i])== 1 :
               catou += 1
               lixos_imgs.pop(i)
               lixo_x.pop(i)
