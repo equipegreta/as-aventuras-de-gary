@@ -121,6 +121,7 @@ def colisao_chao (ya,yb) :
         return False
 
 # =-=-=-= GAME LOOP =-=-=-= #
+pause = False
 running = True
 exec = True
 while running:
@@ -132,7 +133,7 @@ while running:
         screen.fill((255, 255, 255))  # RGB
         # imagem de fundo
         screen.blit(background, (0, 0))  # faz os elementos ficarem mais lentos
-        op1 = main_font.render(f"APERTE 'SPACE' PARA JOGAR", 1, (0, 0, 255))
+        op1 = main_font.render(f"APERTE 'p' PARA JOGAR", 1, (0, 0, 255))
         op2 = main_font.render(f"APERTE 'z' PARA MAIS INFORMAÇÕES", 1, (0, 0, 255))
         op3 = main_font.render(f"APERTE 'h' PARA VER O RANKING", 1, (0, 0, 255))
 
@@ -147,7 +148,7 @@ while running:
 
           elif event.type == pygame.KEYDOWN:
             # tecla de escolha
-            if event.key == pygame.K_SPACE:
+            if event.key == pygame.K_p:
                 # tutorial aqui
                 exec = False
             # elif event.key == pygame.K_z :
@@ -183,6 +184,20 @@ while running:
             m = 2 #preta
         elif event.key == pygame.K_d:
             m = 3 #verde
+        elif event.key == pygame.K_SPACE:
+            pause = True
+            while pause :
+                mnsgnp = main_font.render(f"PAROU!!!, APERTE 'v' PARA VOLTAR", 1, (0, 0, 255))
+                screen.blit(mnsgnp, (400 - (mnsgnp.get_width() / 2), 300))
+                pygame.display.update()
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        pause = False
+                        running = False
+                    elif event.type == pygame.KEYDOWN :
+                        if event.key == pygame.K_v :
+                            pause = False
+
     if event.type == pygame.KEYUP:
         if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
             playerX_change = 0
