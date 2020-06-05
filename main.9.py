@@ -16,6 +16,11 @@ screen = pygame.display.set_mode((800, 600))  # ((width, height))  ((x, y))
 
 # =-=-=-=-=-=-=-=-=-= BACKGROUND =-=-=-=-=-=-=-=-=-= #
 background = pygame.transform.scale(pygame.image.load('fundo.png'),(800,600))
+#=-=-=-=-=-=-=-=-=-=-=-= VIDAS =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= #
+core_c = pygame.transform.scale(pygame.image.load('coração-cheio.png'),(20,20))
+core_v = pygame.transform.scale(pygame.image.load('coração-vazio.png'),(20,20))
+vida = [core_c,core_c,core_c,core_c,core_c]
+cont_v = 5
 
 # =-=-=-=-=-=-=-=-=-= TÍTULO E ÍCONE =-=-=-=-=-=-=-=-=-= #
 pygame.display.set_caption("Título do jogo")
@@ -78,9 +83,10 @@ lixos_imgs = []
 lixo_x = []
 lixo_y = []
 lixoy_change = []
-catou = 0
-catou_errado = 0
-ncatou = 0
+#catou = 0
+#catou_errado = 0
+#ncatou = 0
+pontuacao = 0
 
 def gerar_lixo ():
     j = random.randint(0, 3)
@@ -239,50 +245,105 @@ while running:
        if colisao_lixeira(arma_x,arma_y,lixo_x[i],lixo_y[i]) :
            screen.blit(lixo, (50,50))
            if m == 0 and papeis.count(lixos_imgs[i])== 1 :
-              catou += 1
+              #catou += 1
+              pontuacao += 1
               lixos_imgs.pop(i)
               lixo_x.pop(i)
               lixo_y.pop(i)
               lixoy_change.pop(i)
            elif m == 1 and organicos.count(lixos_imgs[i])== 1 :
-               catou += 1
+               #catou += 1
+               pontuacao += 1
                lixos_imgs.pop(i)
                lixo_x.pop(i)
                lixo_y.pop(i)
                lixoy_change.pop(i)
            elif m == 2 and rejeitos.count(lixos_imgs[i])== 1 :
-               catou += 1
+               #catou += 1
+               pontuacao += 1
                lixos_imgs.pop(i)
                lixo_x.pop(i)
                lixo_y.pop(i)
                lixoy_change.pop(i)
            elif m == 3 and reciclaveis.count(lixos_imgs[i])== 1 :
-               catou += 1
+               #catou += 1
+               pontuacao += 1
                lixos_imgs.pop(i)
                lixo_x.pop(i)
                lixo_y.pop(i)
                lixoy_change.pop(i)
            else:
-               catou_errado +=1
+               #catou_errado +=1
+               pontuacao -= 1
                lixos_imgs.pop(i)
                lixo_x.pop(i)
                lixo_y.pop(i)
                lixoy_change.pop(i)
        elif colisao_chao(chao_y,lixo_y[i]):
-            ncatou+=1
+            #ncatou+=1
+            pontuacao -= 1
             lixos_imgs.pop(i)
             lixo_x.pop(i)
             lixo_y.pop(i)
             lixoy_change.pop(i)
+            vida[cont_v-1] = core_v
+            cont_v -= 1
+    #pontuacao = catou - catou_errado
+    #if pontuacao < 0:
+     #   pontuacao = 0
+     #   cont_v -= 1
 
-    # draw text
-    cat_label = main_font.render(f"CATOU: {catou}", 1, (0,0,255))
-    ncat_label = main_font.render(f"POLUIU: {ncatou}", 1, (0,0,255))
-    cater_label = main_font.render(f"Errou: {catou_errado}", 1, (0, 0, 255))
+    if cont_v == 0 :
+        gameover = True
+        while gameover :
+            for event in pygame.event.get():  # procurando dentro de todos os eventos se o evento está dentro
+                mnsgngo = main_font.render(f"PERDEU!!!", 1, (0, 0, 255))
+                screen.blit(mnsgngo, (400 - (mnsgngo.get_width() / 2), 300))
+                pygame.display.update()
+                if event.type == pygame.QUIT:  # se o evento quit está, running se torna falso e o jogo fecha
+                    running = False
+                    gameover= False
 
-    screen.blit(cat_label, (10, 10))
-    screen.blit(ncat_label, (800 - cat_label.get_width() - 10, 10))
-    screen.blit(cater_label, (400 - (cat_label.get_width()/2) , 10))
+                elif event.type == pygame.KEYDOWN:
+                    # tecla de escolha
+                    if event.key == pygame.K_RETURN:
+                        gameover = False
+                        exec = True
+                        #=-=-=-=-RESETAR AS VARIÁVEIS-=-=-=-=#
+                        player_x = 370
+                        player_y = 500
+                        m = 0
+                        arma_x = 370
+                        arma_y = 470
+                        armax_change = 0
+                        for i in range(0,len(vida)):
+                           vida[i] = core_c
+                        lixos_imgs.clear()
+                        lixo_x.clear()
+                        lixo_y.clear()
+                        lixoy_change.clear()
+                        catou = 0
+                        catou_errado = 0
+                        ncatou = 0
+                        pontuacao = 0
+                        cont_v = 5
+
+
+
+     # draw text
+   # cat_label = main_font.render(f"CATOU: {catou}", 1, (0,0,255))
+   # ncat_label = main_font.render(f"POLUIU: {ncatou}", 1, (0,0,255))
+    pont_label = main_font.render(f"PONTUAÇÃO: {pontuacao}", 1, (0, 0, 255))
+
+
+    #screen.blit(cat_label, (10, 10))
+    #screen.blit(ncat_label, (800 - ncat_label.get_width() - 10, 10))
+    screen.blit(pont_label, (400 - (pont_label.get_width()/2) , 10))
+    screen.blit(vida[0], (10, 50))
+    screen.blit(vida[1], (30, 50))
+    screen.blit(vida[2], (50, 50))
+    screen.blit(vida[3], (70, 50))
+    screen.blit(vida[4], (90, 50))
 
     #para retornar ao menu, basta exec = True no momento desejado
 
