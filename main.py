@@ -22,6 +22,7 @@ background = pygame.transform.scale(pygame.image.load('fundo.png'),(800,600))
 pygame.display.set_caption("Título do jogo")
 icon = pygame.image.load('icone.png')
 pygame.display.set_icon(icon)
+main_font = pygame.font.SysFont("comicsans", 50)
 
 # =-=-=-=-=-=-=-=-=-= ADICIONANDO ELEMENTOS =-=-=-=-=-=-=-=-=-= #
 # jogador principal
@@ -75,8 +76,8 @@ rejeitos = [copo, guardanapo]
 lixos_img = [papeis, organicos, reciclaveis, rejeitos]
 # posicao etc
 lixos_imgs = []
-lixo_x = []
-lixo_y = []
+lixo_x = [enemy_x]
+lixo_y = [enemy_y]
 lixoy_change = []
 catou = 0
 ncatou = 0
@@ -114,8 +115,8 @@ def colisao_lixeira (xa,ya,xb,yb):
         return True
     else:
         return False
-def colisão_chao (xa,xb) :
-    if xa >= xb :
+def colisao_chao (ya,yb) :
+    if (ya-yb)<20 :
         return True
     else:
         return False
@@ -196,9 +197,19 @@ while running:
            lixo_x.pop(i)
            lixo_y.pop(i)
            lixoy_change.pop(i)
-     #  elif colisão_chao(arma_x,lixo_x[i]):
-     #       ncatou +=1
+       elif colisao_chao(chao_y,lixo_y[i]):
+            ncatou+=1
+            lixos_imgs.pop(i)
+            lixo_x.pop(i)
+            lixo_y.pop(i)
+            lixoy_change.pop(i)
 
+    # draw text
+    lives_label = main_font.render(f"CATOU: {catou}", 1, (0,0,255))
+    level_label = main_font.render(f"POLUIU: {ncatou}", 1, (0,0,255))
+
+    screen.blit(lives_label, (10, 10))
+    screen.blit(level_label, (800 - level_label.get_width() - 10, 10))
 
     # nada aparece se não tiver a função update
     pygame.display.update()
