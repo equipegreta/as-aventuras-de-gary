@@ -1,6 +1,6 @@
 import pygame
 import random
-import math
+#import math
 
 # inicializando o pygame
 pygame.init()
@@ -16,7 +16,7 @@ screen = pygame.display.set_mode((800, 600))  # ((width, height))  ((x, y))
 #       V 600 px
 
 # =-=-=-=-=-=-=-=-=-= BACKGROUND =-=-=-=-=-=-=-=-=-= #
-background = pygame.image.load('fundo.png')
+background = pygame.transform.scale(pygame.image.load('fundo.png'),(800,600))
 
 # =-=-=-=-=-=-=-=-=-= TÍTULO E ÍCONE =-=-=-=-=-=-=-=-=-= #
 pygame.display.set_caption("Título do jogo")
@@ -34,7 +34,8 @@ armaazul = 'azul.png'
 armabranca = 'branca.png'
 armapreta = 'preta.png'
 armaverde = 'verde.png'
-cor = armaazul
+cores = [armaazul,armabranca,armapreta,armaverde]
+m = 0
 arma_x = 370
 arma_y = 470
 armax_change = 0
@@ -53,8 +54,8 @@ def player(x, y):
     screen.blit(player_img, (x, y))  # (imagem, coordenadas)
 
 
-def arma(cor, x, y):
-    return screen.blit(pygame.image.load(cor), (x,y))
+def arma(ind, x, y):
+    screen.blit(pygame.image.load(cores[ind]), (x,y))
 
 
 def enemy(x, y):
@@ -88,14 +89,14 @@ while running:
             playerX_change = 5
             armax_change = 5
     if event.type == pygame.KEYDOWN:
-        if event.type == pygame.K_w:
-            cor = armaazul
-        elif event.type == pygame.K_a:
-            cor = armabranca
-        elif event.type == pygame.K_s:
-            cor = armapreta
-        elif event.type == pygame.K_d:
-            cor = armaverde
+        if event.key == pygame.K_w:
+            m = 0
+        elif event.key == pygame.K_a:
+            m = 1
+        elif event.key == pygame.K_s:
+            m = 2
+        elif event.key == pygame.K_d:
+            m = 3
     if event.type == pygame.KEYUP:
         if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
             playerX_change = 0
@@ -123,7 +124,7 @@ while running:
     player(player_x, player_y)
     enemy(enemy_x, enemy_y)
     chao(chao_x, chao_y)
-    arma(cor, arma_x, arma_y)
+    arma(m, arma_x, arma_y)
 
     # nada aparece se não tiver a função update
     pygame.display.update()
