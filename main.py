@@ -1,6 +1,5 @@
 import pygame
 import random
-# import math
 
 # inicializando o pygame
 pygame.init()
@@ -55,17 +54,17 @@ chao_y = 555
 
 # lixo
 # azul - papel
-folha = 'folha.png'
-caderno = 'caderno.png'
+folha = pygame.image.load('folha.png')
+caderno = pygame.image.load('caderno.png')
 # branco - orgânico
-banana = 'banana.png'
-maca = 'maca.png'
+banana = pygame.image.load('banana.png')
+maca = pygame.image.load('maca.png')
 # verde - reciclável
-embalagem = 'embalagem.png'
-marmitaisopor = 'marmita.png'
+embalagem = pygame.image.load('embalagem.png')
+marmitaisopor = pygame.image.load('marmita.png')
 # preto - rejeito
-copo = 'copo.png'
-guardanapo = 'guardanapo.png'
+copo = pygame.image.load('copo.png')
+guardanapo = pygame.image.load('guardanapo.png')
 
 # separação
 papeis = [folha, caderno]
@@ -76,17 +75,17 @@ rejeitos = [copo, guardanapo]
 lixos_img = [papeis, organicos, reciclaveis, rejeitos]
 # posicao etc
 lixos_imgs = []
-lixo_x = [enemy_x]
-lixo_y = [enemy_y]
+lixo_x = []
+lixo_y = []
 lixoy_change = []
 catou = 0
+catou_errado = 0
 ncatou = 0
-
 
 def gerar_lixo ():
     j = random.randint(0, 3)
     k = random.randint(0, 1)
-    lixos_imgs.append(pygame.image.load(lixos_img[j][k]))
+    lixos_imgs.append(lixos_img[j][k])
     lixo_x.append(enemy_x)
     lixo_y.append(enemy_y)
     lixoy_change.append(2)
@@ -111,7 +110,7 @@ def chao(x, y):
 def jogar_lixo(i, x, y):
     screen.blit(lixos_imgs[i], (x, y))
 def colisao_lixeira (xa,ya,xb,yb):
-    if (xa-xb)<=20 and (ya-yb)<=20 :
+    if abs(xa-xb)<=20 and (ya-yb)<=20 :
         return True
     else:
         return False
@@ -146,13 +145,13 @@ while running:
     # se são as teclas WASD
     if event.type == pygame.KEYDOWN:
         if event.key == pygame.K_w:
-            m = 0
+            m = 0 #azul
         elif event.key == pygame.K_a:
-            m = 1
+            m = 1 #branco
         elif event.key == pygame.K_s:
-            m = 2
+            m = 2 #preta
         elif event.key == pygame.K_d:
-            m = 3
+            m = 3 #verde
     if event.type == pygame.KEYUP:
         if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
             playerX_change = 0
@@ -190,13 +189,39 @@ while running:
     chao(chao_x, chao_y)
     arma(m, arma_x, arma_y)
     # checar colisões
-    for i in range(len(lixos_imgs)):
+    for i,lixo in enumerate(lixos_imgs):
        if colisao_lixeira(arma_x,arma_y,lixo_x[i],lixo_y[i]) :
-           catou+=1
-           lixos_imgs.pop(i)
-           lixo_x.pop(i)
-           lixo_y.pop(i)
-           lixoy_change.pop(i)
+           screen.blit(lixo, (50,50))
+           if m == 0 and papeis.count(lixos_imgs[i])== 1 :
+              catou += 1
+              lixos_imgs.pop(i)
+              lixo_x.pop(i)
+              lixo_y.pop(i)
+              lixoy_change.pop(i)
+           elif m == 1 and organicos.count(lixos_imgs[i])== 1 :
+               catou += 1
+               lixos_imgs.pop(i)
+               lixo_x.pop(i)
+               lixo_y.pop(i)
+               lixoy_change.pop(i)
+           elif m == 2 and rejeitos.count(lixos_imgs[i])== 1 :
+               catou += 1
+               lixos_imgs.pop(i)
+               lixo_x.pop(i)
+               lixo_y.pop(i)
+               lixoy_change.pop(i)
+           elif m == 3 and reciclaveis.count(lixos_imgs[i])== 1 :
+               catou += 1
+               lixos_imgs.pop(i)
+               lixo_x.pop(i)
+               lixo_y.pop(i)
+               lixoy_change.pop(i)
+           else:
+               catou_errado +=1
+               lixos_imgs.pop(i)
+               lixo_x.pop(i)
+               lixo_y.pop(i)
+               lixoy_change.pop(i)
        elif colisao_chao(chao_y,lixo_y[i]):
             ncatou+=1
             lixos_imgs.pop(i)
@@ -205,11 +230,13 @@ while running:
             lixoy_change.pop(i)
 
     # draw text
-    lives_label = main_font.render(f"CATOU: {catou}", 1, (0,0,255))
-    level_label = main_font.render(f"POLUIU: {ncatou}", 1, (0,0,255))
+    cat_label = main_font.render(f"CATOU: {catou}", 1, (0,0,255))
+    ncat_label = main_font.render(f"POLUIU: {ncatou}", 1, (0,0,255))
+    cater_label = main_font.render(f"Errou: {catou_errado}", 1, (0, 0, 255))
 
-    screen.blit(lives_label, (10, 10))
-    screen.blit(level_label, (800 - level_label.get_width() - 10, 10))
+    screen.blit(cat_label, (10, 10))
+    screen.blit(ncat_label, (800 - cat_label.get_width() - 10, 10))
+    screen.blit(cater_label, (400 - (cat_label.get_width()/2) , 10))
 
     # nada aparece se não tiver a função update
     pygame.display.update()
