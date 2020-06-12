@@ -45,7 +45,7 @@ enemy_x = random.randint(0, 800)
 enemy_y = 20
 enemyX_change = 3
 # chão
-chao_img = pygame.image.load('chao.png')
+chao_img = pygame.transform.scale(pygame.image.load('chao.png'),(800,50))
 chao_x = 0
 chao_y = 555
 
@@ -71,7 +71,7 @@ running = True
 while running:
 
     # =-=-=-=-=-=-=-=-=-= BACKGROUND =-=-=-=-=-=-=-=-=-= #
-    screen.fill((255, 255, 255))  # RGB
+    screen.fill((255,255,255))  # RGB
     # imagem de fundo
     screen.blit(background, (0, 0))  # faz os elementos ficarem mais lentos
     # =-=-=-=-=-=-=-=-=-= FECHAR A PÁGINA =-=-=-=-=-=-=-=-=-= #
@@ -115,9 +115,9 @@ while running:
     #inimigo
     enemy_x += enemyX_change
     if enemy_x <= 0:
-        enemyX_change = 3
-    elif enemy_x > 736:
-        enemyX_change = -3
+        enemyX_change = 2
+    elif enemy_x > 726:
+        enemyX_change = -2
 
     # =-= ELEMENTOS =-=
     # precisam ser impressos após o screen fill e antes do display update
