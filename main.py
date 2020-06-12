@@ -1,6 +1,6 @@
 import pygame
 import random
-#import math
+# import math
 
 # inicializando o pygame
 pygame.init()
@@ -29,25 +29,66 @@ player_img = pygame.image.load('protagonista.png')
 player_x = 370
 player_y = 500
 playerX_change = 0
+
 # lixeira / arma
 armaazul = 'azul.png'
 armabranca = 'branca.png'
 armapreta = 'preta.png'
 armaverde = 'verde.png'
-cores = [armaazul,armabranca,armapreta,armaverde]
+cores = [armaazul, armabranca, armapreta, armaverde]
 m = 0
 arma_x = 370
 arma_y = 470
 armax_change = 0
+
 # inimigo
 enemy_img = pygame.image.load('inimigo.png')
 enemy_x = random.randint(0, 800)
 enemy_y = 20
 enemyX_change = 3
+
 # chão
 chao_img = pygame.transform.scale(pygame.image.load('chao.png'),(800,50))
 chao_x = 0
 chao_y = 555
+
+# lixo
+# azul - papel
+folha = 'folha.png'
+caderno = 'caderno.png'
+# branco - orgânico
+banana = 'banana.png'
+maca = 'maca.png'
+# verde - reciclável
+embalagem = 'embalagem.png'
+marmitaisopor = 'marmita.png'
+# preto - rejeito
+copo = 'copo.png'
+guardanapo = 'guardanapo.png'
+
+# separação
+papeis = [folha, caderno]
+reciclaveis = [embalagem, marmitaisopor]
+organicos = [banana, maca]
+rejeitos = [copo, guardanapo]
+# todos
+lixos_img = [papeis, organicos, reciclaveis, rejeitos]
+# posicao etc
+lixos_imgs = []
+lixo_x = []
+lixo_y = []
+lixox_change = []
+lixoy_change = []
+num_lixos = 1
+
+for i in range(num_lixos):
+    j = random.randint(0, 4)
+    k = random.randint(0, 1)
+    lixos_imgs.append(pygame.image.load(lixos_img[j][k]))
+    lixo_x.append(random.randint(0, 700))
+    lixo_y.append(random.randint(50, 150))
+    lixox_change.append(2)
+    lixoy_change.append(40)
 
 
 def player(x, y):
@@ -64,6 +105,10 @@ def enemy(x, y):
 
 def chao(x, y):
     screen.blit(chao_img, (x, y))
+
+
+def jogar_lixo(i, x, y):
+    screen.blit(lixos_imgs[i], (x, y))
 
 
 # =-=-=-= GAME LOOP =-=-=-= #
@@ -88,6 +133,7 @@ while running:
         elif event.key == pygame.K_RIGHT:
             playerX_change = 5
             armax_change = 5
+    # se são as teclas WASD
     if event.type == pygame.KEYDOWN:
         if event.key == pygame.K_w:
             m = 0
@@ -103,6 +149,19 @@ while running:
             armax_change = 0
     arma_x += armax_change
     player_x += playerX_change
+
+    # =-=-=-=-=-=-=-=-= LIXOS =-=-=-=-=-=-=-=-= #
+
+    for i in range(num_lixos):
+        lixo_x[i] += lixox_change[i]
+        if lixo_x[i] <= 0:
+            lixox_change[i] = 4
+            lixo_y[i] += lixoy_change[i]
+        elif lixo_x[i] >= 700:
+            lixox_change[i] = -4
+            lixo_y[i] += lixoy_change[i]
+
+        jogar_lixo(i, lixo_x[i], lixo_y[i])
 
     # =-=-=-=-=-=-=-=-= PARA O ELEMENTO NÃO SUMIR QUANDO ENCONTRAR A BORDA  =-=-=-=-=-=-=-=-= #
     # jogador
