@@ -85,7 +85,6 @@ def menu():
                 sys.exit()
 
         pygame.display.update()
-        mainClock.tick(60)
 
 
 # =-= Jogo =-= #
