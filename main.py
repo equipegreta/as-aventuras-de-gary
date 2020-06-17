@@ -96,6 +96,7 @@ def jogar():
     lixo_certo = pygame.mixer.Sound('certo.wav')
     lixo_errado = pygame.mixer.Sound('errado.wav')
     caiu_fora = pygame.mixer.Sound('fora.wav')
+    perdeu = pygame.mixer.Sound('perdeu.wav')
 
     # Jogador principal
     player_img = pygame.transform.scale(pygame.image.load('protagonista.png').convert_alpha(), (50, 64))
@@ -379,6 +380,7 @@ def jogar():
         screen.blit(vida[4], (90, 50))
 
         if contagem_vidas == 0:
+            perdeu.play()
             game_over()
 
         # Atenção: Nada aparece se não tiver a função update!
@@ -389,6 +391,8 @@ def jogar():
 # =-= Fim de jogo =-= #
 def game_over():
     btn_voltar_img = pygame.image.load('btn.png')
+    # Sons
+
     running = True
     while running:
 
