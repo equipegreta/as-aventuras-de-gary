@@ -123,21 +123,24 @@ def jogar():
     # Lixos
 
     # Azul - papel
-    folha = pygame.transform.scale(pygame.image.load('folha.png').convert_alpha(),(40,50))
-    caderno = pygame.transform.scale(pygame.image.load('caderno.png').convert_alpha(),(40,50))
-    postit = pygame.transform.scale(pygame.image.load('postit.png').convert_alpha(),(30,30))
+    folha = pygame.transform.scale(pygame.image.load('folha.png').convert_alpha(), (40, 50))
+    caderno = pygame.transform.scale(pygame.image.load('caderno.png').convert_alpha(), (40, 50))
+    postit = pygame.transform.scale(pygame.image.load('postit.png').convert_alpha(), (30, 30))
     # Branco - orgânico
-    banana = pygame.transform.scale(pygame.image.load('banana.png').convert_alpha(),(30,40))
-    maca = pygame.transform.scale(pygame.image.load('maca.png').convert_alpha(),(40,40))
-    laranja = pygame.transform.scale(pygame.image.load('laranja.png').convert_alpha(),(40,40))
+    banana = pygame.transform.scale(pygame.image.load('banana.png').convert_alpha(), (30, 40))
+    maca = pygame.transform.scale(pygame.image.load('maca.png').convert_alpha(), (40, 40))
+    laranja = pygame.transform.scale(pygame.image.load('laranja.png').convert_alpha(), (40, 40))
     # Verde - reciclável
-    cebolitos = pygame.transform.scale(pygame.image.load('cebolitos.png').convert_alpha(),(40,60))
-    latinha = pygame.transform.scale(pygame.image.load('latinha.png').convert_alpha(),(40,40))
-    garrafapet = pygame.transform.scale(pygame.image.load('garrafapet.png').convert_alpha(),(40,50))
+    cebolitos = pygame.transform.scale(pygame.image.load('cebolitos.png').convert_alpha(), (40, 60))
+    latinha = pygame.transform.scale(pygame.image.load('latinha.png').convert_alpha(), (40, 40))
+    garrafapet = pygame.transform.scale(pygame.image.load('garrafapet.png').convert_alpha(), (40, 50))
     # Preto - rejeito
-    copo = pygame.transform.scale(pygame.image.load('copo.png').convert_alpha(),(40,50))
-    guardanapo = pygame.transform.scale(pygame.image.load('guardanapo.png').convert_alpha(),(40,40))
-    fita = pygame.transform.scale(pygame.image.load('fita.png').convert_alpha(),(50,40))
+    copo = pygame.transform.scale(pygame.image.load('copo.png').convert_alpha(), (40, 50))
+    guardanapo = pygame.transform.scale(pygame.image.load('guardanapo.png').convert_alpha(), (40, 40))
+    fita = pygame.transform.scale(pygame.image.load('fita.png').convert_alpha(), (50, 40))
+
+    # Botão voltar pra o jogo
+    btn_voltar_img = pygame.image.load('btn.png')
 
     # Separação
     papeis = [folha, caderno,postit]
@@ -207,6 +210,7 @@ def jogar():
             return False
 
     # =-= Loop central do jogo =-= #
+    pause = False
     running = True
     while running:
 
@@ -249,12 +253,27 @@ def jogar():
                     cor_arma = 2  # Preto
                 elif event.key == pygame.K_d:
                     cor_arma = 3  # Verde
+        # =-= Pausar o jogo =-= #
+                elif event.key == pygame.K_p or event.key == pygame.K_SPACE:
+                    pause = True
+                    while pause:
+                        mnsgnp = main_font.render(f"APERTE P PRA VOLTAR A JOGAR", 1, (0, 0, 255))
+                        screen.blit(mnsgnp, (400 - (mnsgnp.get_width() / 2), 300))
+                        pygame.display.update()
+                        for event in pygame.event.get():
+                            if event.type == pygame.QUIT:
+                                pygame.quit()
+                                sys.exit()
+                            elif event.type == pygame.KEYDOWN:
+                                if event.key == pygame.K_p:
+                                    pause = False
+
         arma_x += arma_x_deslocamento
         player_x += player_x_deslocamento
 
         # =-= Chamando a função que gera os lixos =-= #
-        try :
-            if lixo_y[-1] > 60 :
+        try:
+            if lixo_y[-1] > 60:
                 if random.randrange(0, 150) == 1:
                     gerar_lixo()
         except IndexError:
@@ -357,8 +376,23 @@ def jogar():
 
 # =-= Fim de jogo =-= #
 def game_over():
+    btn_voltar_img = pygame.image.load('btn.png')
     running = True
     while running:
+
+        btn_voltar = pygame.Rect((257, 150), (286, 50))  # left, top, width, height
+        pygame.draw.rect(screen, (255, 0, 0), btn_voltar)
+
+        screen.blit(btn_voltar_img, (257, 150))
+
+        # Pegando o clique do mouse
+        mouse_x, mouse_y = pygame.mouse.get_pos()
+
+        if btn_voltar.collidepoint((mouse_x, mouse_y)):
+            for event in pygame.event.get():
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    menu()
+
         mnsgngo = main_font.render(f"PERDEU!!!", 1, (0, 0, 255))
         screen.blit(mnsgngo, (400 - (mnsgngo.get_width() / 2), 300))
         pygame.display.update()
@@ -366,6 +400,8 @@ def game_over():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+
+        pygame.display.update()
 
 
 menu()
