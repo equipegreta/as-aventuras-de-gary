@@ -93,9 +93,9 @@ def jogar():
     # =-= Elementos do jogo =-= #
 
     # Jogador principal
-    player_img = pygame.transform.scale(pygame.image.load('protagonista.png').convert_alpha(),(50,64))
+    player_img = pygame.transform.scale(pygame.image.load('protagonista.png').convert_alpha(), (50, 64))
     player_x = 370
-    player_y = 500
+    player_y = 492
     player_x_deslocamento = 0
 
     # Arma do personagem (lixeiras)
@@ -106,11 +106,11 @@ def jogar():
     cores = [arma_azul, arma_branca, arma_preta, arma_verde]
     cor_arma = 0
     arma_x = 375
-    arma_y = 465
+    arma_y = 457
     arma_x_deslocamento = 0
 
     # Inimigo
-    enemy_img = pygame.image.load('inimigo.png')
+    enemy_img = pygame.transform.scale(pygame.image.load('inimigo.png'), (100, 59))
     enemy_x = random.randint(0, 800)
     enemy_y = 20
     enemy_x_deslocamento = 3
