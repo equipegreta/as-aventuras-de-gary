@@ -92,6 +92,11 @@ def jogar():
 
     # =-= Elementos do jogo =-= #
 
+    # Sons
+    lixo_certo = pygame.mixer.Sound('certo.wav')
+    lixo_errado = pygame.mixer.Sound('errado.wav')
+    caiu_fora = pygame.mixer.Sound('fora.wav')
+
     # Jogador principal
     player_img = pygame.transform.scale(pygame.image.load('protagonista.png').convert_alpha(), (50, 64))
     player_x = 370
@@ -143,10 +148,10 @@ def jogar():
     btn_voltar_img = pygame.image.load('btn.png')
 
     # Separação
-    papeis = [folha, caderno,postit]
-    reciclaveis = [cebolitos,latinha,garrafapet]
-    organicos = [banana, maca,laranja]
-    rejeitos = [copo, guardanapo,fita]
+    papeis = [folha, caderno, postit]
+    reciclaveis = [cebolitos, latinha,garrafapet]
+    organicos = [banana, maca, laranja]
+    rejeitos = [copo, guardanapo, fita]
 
     # Todos
     lixos_img = [papeis, organicos, reciclaveis, rejeitos]
@@ -175,6 +180,7 @@ def jogar():
             lixo_x.append(enemy_x)
             lixo_y.append(enemy_y)
             lixo_y_deslocamento.append(2)
+
     # Imprimindo na tela o protagonista
     def player(x, y):
         screen.blit(player_img, (x, y))
@@ -314,6 +320,7 @@ def jogar():
                 screen.blit(lixo, (50, 50))
                 # Azul
                 if cor_arma == 0 and papeis.count(lixos_imgs[i]) == 1:
+                    lixo_certo.play()
                     pontuacao += 1
                     lixos_imgs.pop(i)
                     lixo_x.pop(i)
@@ -321,6 +328,7 @@ def jogar():
                     lixo_y_deslocamento.pop(i)
                 # Branca
                 elif cor_arma == 1 and organicos.count(lixos_imgs[i]) == 1:
+                    lixo_certo.play()
                     pontuacao += 1
                     lixos_imgs.pop(i)
                     lixo_x.pop(i)
@@ -328,6 +336,7 @@ def jogar():
                     lixo_y_deslocamento.pop(i)
                 # Preta
                 elif cor_arma == 2 and rejeitos.count(lixos_imgs[i]) == 1:
+                    lixo_certo.play()
                     pontuacao += 1
                     lixos_imgs.pop(i)
                     lixo_x.pop(i)
@@ -335,6 +344,7 @@ def jogar():
                     lixo_y_deslocamento.pop(i)
                 # Verde
                 elif cor_arma == 3 and reciclaveis.count(lixos_imgs[i]) == 1:
+                    lixo_certo.play()
                     pontuacao += 1
                     lixos_imgs.pop(i)
                     lixo_x.pop(i)
@@ -342,6 +352,7 @@ def jogar():
                     lixo_y_deslocamento.pop(i)
                 # Se coletar um lixo na lixeira errada
                 else:
+                    lixo_errado.play()
                     pontuacao -= 1
                     lixos_imgs.pop(i)
                     lixo_x.pop(i)
@@ -349,6 +360,7 @@ def jogar():
                     lixo_y_deslocamento.pop(i)
             # Se colidiu com o chão
             elif colisao_chao(chao_y, lixo_y[i]):
+                caiu_fora.play()
                 pontuacao -= 1
                 lixos_imgs.pop(i)
                 lixo_x.pop(i)
