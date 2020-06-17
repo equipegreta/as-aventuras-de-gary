@@ -245,13 +245,13 @@ def jogar():
                     arma_x_deslocamento = 0
         # =-= Mudando a cor da arma =-= #
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_w:
+                if event.key == pygame.K_w or event.key == pygame.K_1:
                     cor_arma = 0  # Azul
-                elif event.key == pygame.K_a:
+                elif event.key == pygame.K_a or event.key == pygame.K_2:
                     cor_arma = 1  # Branco
-                elif event.key == pygame.K_s:
+                elif event.key == pygame.K_s or event.key == pygame.K_3:
                     cor_arma = 2  # Preto
-                elif event.key == pygame.K_d:
+                elif event.key == pygame.K_d or event.key == pygame.K_4:
                     cor_arma = 3  # Verde
         # =-= Pausar o jogo =-= #
                 elif event.key == pygame.K_p or event.key == pygame.K_SPACE:
