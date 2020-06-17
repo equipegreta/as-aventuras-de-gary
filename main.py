@@ -1,4 +1,5 @@
 import pygame
+import pygame.freetype
 import random
 import sys
 
@@ -15,7 +16,9 @@ background = pygame.transform.scale(pygame.image.load('fundo.png'), (800, 600))
 pygame.display.set_caption("Título")
 icon = pygame.image.load('icone.png')
 pygame.display.set_icon(icon)
-main_font = pygame.font.SysFont("comicsans", 50)
+
+# Fontes
+main_font = pygame.font.Font("PressStart2P.ttf", 15)
 
 
 # =-= Menu =-= #
@@ -99,9 +102,9 @@ def jogar():
     perdeu = pygame.mixer.Sound('perdeu.wav')
 
     # Jogador principal
-    player_img = pygame.transform.scale(pygame.image.load('protagonista.png').convert_alpha(), (50, 64))
+    player_img = pygame.transform.scale(pygame.image.load('protagonista.png').convert_alpha(), (50, 73))
     player_x = 370
-    player_y = 492
+    player_y = 482
     player_x_deslocamento = 0
 
     # Arma do personagem (lixeiras)
@@ -112,7 +115,7 @@ def jogar():
     cores = [arma_azul, arma_branca, arma_preta, arma_verde]
     cor_arma = 0
     arma_x = 375
-    arma_y = 457
+    arma_y = 447
     arma_x_deslocamento = 0
 
     # Inimigo
@@ -168,6 +171,7 @@ def jogar():
 
     coracao_cheio = pygame.transform.scale(pygame.image.load('coração-cheio.png'), (20, 20))
     coracao_vazio = pygame.transform.scale(pygame.image.load('coração-vazio.png'), (20, 20))
+    coraçao_metade = pygame.transform.scale(pygame.image.load('coração-metade.png'), (20, 20))
     vida = [coracao_cheio, coracao_cheio, coracao_cheio, coracao_cheio, coracao_cheio]
     contagem_vidas = 5
 
@@ -354,7 +358,6 @@ def jogar():
                 # Se coletar um lixo na lixeira errada
                 else:
                     lixo_errado.play()
-                    pontuacao -= 1
                     lixos_imgs.pop(i)
                     lixo_x.pop(i)
                     lixo_y.pop(i)
@@ -362,7 +365,6 @@ def jogar():
             # Se colidiu com o chão
             elif colisao_chao(chao_y, lixo_y[i]):
                 caiu_fora.play()
-                pontuacao -= 1
                 lixos_imgs.pop(i)
                 lixo_x.pop(i)
                 lixo_y.pop(i)
@@ -371,13 +373,13 @@ def jogar():
                 contagem_vidas -= 1
 
         # Tabela de pontuação e vidas
-        pont_label = main_font.render(f"PONTUAÇÃO: {pontuacao}", 1, (0, 0, 255))
+        pont_label = main_font.render(f"{pontuacao}".zfill(7), 1, (0, 0, 0))
         screen.blit(pont_label, (10, 10))  # (400 - (pont_label.get_width() / 2)
-        screen.blit(vida[0], (10, 50))
-        screen.blit(vida[1], (30, 50))
-        screen.blit(vida[2], (50, 50))
-        screen.blit(vida[3], (70, 50))
-        screen.blit(vida[4], (90, 50))
+        screen.blit(vida[0], (10, 30))
+        screen.blit(vida[1], (30, 30))
+        screen.blit(vida[2], (50, 30))
+        screen.blit(vida[3], (70, 30))
+        screen.blit(vida[4], (90, 30))
 
         if contagem_vidas == 0:
             perdeu.play()
