@@ -93,20 +93,20 @@ def jogar():
     # =-= Elementos do jogo =-= #
 
     # Jogador principal
-    player_img = pygame.image.load('protagonista.png')
+    player_img = pygame.transform.scale(pygame.image.load('protagonista.png').convert_alpha(),(50,64))
     player_x = 370
     player_y = 500
     player_x_deslocamento = 0
 
     # Arma do personagem (lixeiras)
     arma_azul = 'azul.png'  # papel
-    arma_branca = 'branca.png'  # orgânico
-    arma_preta = 'preta.png'  # rejeito
+    arma_branca = 'branco.png'  # orgânico
+    arma_preta = 'preto.png'  # rejeito
     arma_verde = 'verde.png'  # reciclável
     cores = [arma_azul, arma_branca, arma_preta, arma_verde]
     cor_arma = 0
-    arma_x = 370
-    arma_y = 470
+    arma_x = 375
+    arma_y = 465
     arma_x_deslocamento = 0
 
     # Inimigo
@@ -123,23 +123,27 @@ def jogar():
     # Lixos
 
     # Azul - papel
-    folha = pygame.image.load('folha.png')
-    caderno = pygame.image.load('caderno.png')
+    folha = pygame.transform.scale(pygame.image.load('folha.png').convert_alpha(),(40,50))
+    caderno = pygame.transform.scale(pygame.image.load('caderno.png').convert_alpha(),(40,50))
+    postit = pygame.transform.scale(pygame.image.load('postit.png').convert_alpha(),(30,30))
     # Branco - orgânico
-    banana = pygame.image.load('banana.png')
-    maca = pygame.image.load('maca.png')
+    banana = pygame.transform.scale(pygame.image.load('banana.png').convert_alpha(),(30,40))
+    maca = pygame.transform.scale(pygame.image.load('maca.png').convert_alpha(),(40,40))
+    laranja = pygame.transform.scale(pygame.image.load('laranja.png').convert_alpha(),(40,40))
     # Verde - reciclável
-    embalagem = pygame.image.load('embalagem.png')
-    marmita_isopor = pygame.image.load('marmita.png')
+    cebolitos = pygame.transform.scale(pygame.image.load('cebolitos.png').convert_alpha(),(40,60))
+    latinha = pygame.transform.scale(pygame.image.load('latinha.png').convert_alpha(),(40,40))
+    garrafapet = pygame.transform.scale(pygame.image.load('garrafapet.png').convert_alpha(),(40,50))
     # Preto - rejeito
-    copo = pygame.image.load('copo.png')
-    guardanapo = pygame.image.load('guardanapo.png')
+    copo = pygame.transform.scale(pygame.image.load('copo.png').convert_alpha(),(40,50))
+    guardanapo = pygame.transform.scale(pygame.image.load('guardanapo.png').convert_alpha(),(40,40))
+    fita = pygame.transform.scale(pygame.image.load('fita.png').convert_alpha(),(50,40))
 
     # Separação
-    papeis = [folha, caderno]
-    reciclaveis = [embalagem, marmita_isopor]
-    organicos = [banana, maca]
-    rejeitos = [copo, guardanapo]
+    papeis = [folha, caderno,postit]
+    reciclaveis = [cebolitos,latinha,garrafapet]
+    organicos = [banana, maca,laranja]
+    rejeitos = [copo, guardanapo,fita]
 
     # Todos
     lixos_img = [papeis, organicos, reciclaveis, rejeitos]
@@ -162,20 +166,19 @@ def jogar():
 
     # Gerando lixo aleatoriamente com a biblioteca random
     def gerar_lixo():
-        j = random.randint(0, 3)
-        k = random.randint(0, 1)
-        lixos_imgs.append(lixos_img[j][k])
-        lixo_x.append(enemy_x)
-        lixo_y.append(enemy_y)
-        lixo_y_deslocamento.append(2)
-
+            j = random.randint(0, 3)
+            k = random.randint(0, 2)
+            lixos_imgs.append(lixos_img[j][k])
+            lixo_x.append(enemy_x)
+            lixo_y.append(enemy_y)
+            lixo_y_deslocamento.append(2)
     # Imprimindo na tela o protagonista
     def player(x, y):
         screen.blit(player_img, (x, y))
 
     # Imprimindo na tela a arma
     def arma(ind, x, y):
-        screen.blit(pygame.image.load(cores[ind]), (x,y))
+        screen.blit(pygame.transform.scale(pygame.image.load(cores[ind]).convert_alpha(),(40,40)), (x,y))
 
     # Imprimindo na tela o inimigo
     def enemy(x, y):
@@ -191,7 +194,7 @@ def jogar():
 
     # Verificando colisão com a lixeira
     def colisao_lixeira(xa, ya, xb, yb):
-        if abs(xa - xb) <= 20 and (ya - yb) <= 20:
+        if abs(xa - xb) <= 40 and (ya - yb) <= 15:
             return True
         else:
             return False
@@ -250,8 +253,13 @@ def jogar():
         player_x += player_x_deslocamento
 
         # =-= Chamando a função que gera os lixos =-= #
-        if random.randrange(0, 210) == 1:
-            gerar_lixo()
+        try :
+            if lixo_y[-1] > 60 :
+                if random.randrange(0, 150) == 1:
+                    gerar_lixo()
+        except IndexError:
+            if random.randrange(0, 150) == 1:
+                gerar_lixo()
         for i in range(len(lixos_imgs)):
             lixo_y[i] += lixo_y_deslocamento[i]
             jogar_lixo(i, lixo_x[i], lixo_y[i])
@@ -259,13 +267,13 @@ def jogar():
         # =-= Para o elemento não sumir quando encontrar a borda =-= #
         # Protagonista
         if player_x <= 0:
-            arma_x = 0
+            arma_x = 5
             player_x = 0
         # Prestar atenção na largura da imagem aqui caso mude!
         # (tamanho_tela - largura_imagem = 754)
         elif player_x > 754:
             player_x = 754
-            arma_x = 754
+            arma_x = 759
 
         # Inimigo
         enemy_x += enemy_x_deslocamento
