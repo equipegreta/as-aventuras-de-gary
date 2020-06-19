@@ -119,10 +119,10 @@ def jogar():
     arma_x_deslocamento = 0
 
     # Inimigo
-    enemy_img = pygame.transform.scale(pygame.image.load('inimigo.png'), (100, 59))
+    enemy_img = pygame.transform.scale(pygame.image.load('inimigo.png'), (142, 100))
     enemy_x = random.randint(0, 800)
     enemy_y = 20
-    enemy_x_deslocamento = 3
+    enemy_x_deslocamento = 4
 
     # Chão
     chao_img = pygame.transform.scale(pygame.image.load('chao.png'), (800, 50))
@@ -179,12 +179,12 @@ def jogar():
 
     # Gerando lixo aleatoriamente com a biblioteca random
     def gerar_lixo():
-            j = random.randint(0, 3)
-            k = random.randint(0, 2)
-            lixos_imgs.append(lixos_img[j][k])
-            lixo_x.append(enemy_x)
-            lixo_y.append(enemy_y)
-            lixo_y_deslocamento.append(2)
+        j = random.randint(0, 3)
+        k = random.randint(0, 2)
+        lixos_imgs.append(lixos_img[j][k])
+        lixo_x.append(enemy_x)
+        lixo_y.append(enemy_y)
+        lixo_y_deslocamento.append(3)
 
     # Imprimindo na tela o protagonista
     def player(x, y):
@@ -192,7 +192,7 @@ def jogar():
 
     # Imprimindo na tela a arma
     def arma(ind, x, y):
-        screen.blit(pygame.transform.scale(pygame.image.load(cores[ind]).convert_alpha(),(40,40)), (x,y))
+        screen.blit(pygame.transform.scale(pygame.image.load(cores[ind]).convert_alpha(), (40, 40)), (x, y))
 
     # Imprimindo na tela o inimigo
     def enemy(x, y):
@@ -308,9 +308,9 @@ def jogar():
         # Inimigo
         enemy_x += enemy_x_deslocamento
         if enemy_x <= 0:
-            enemy_x_deslocamento = 2
-        elif enemy_x > 726:
-            enemy_x_deslocamento = -2
+            enemy_x_deslocamento = 4
+        elif enemy_x > 658:
+            enemy_x_deslocamento = -4
 
         # =-= Elementos =-= #
         # Atenção: Precisam ser impressos após o screen fill e antes do display update
