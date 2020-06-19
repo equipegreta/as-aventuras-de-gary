@@ -132,21 +132,21 @@ def jogar():
     # Lixos
 
     # Azul - papel
-    folha = pygame.transform.scale(pygame.image.load('folha.png').convert_alpha(), (40, 50))
-    caderno = pygame.transform.scale(pygame.image.load('caderno.png').convert_alpha(), (40, 50))
-    postit = pygame.transform.scale(pygame.image.load('postit.png').convert_alpha(), (30, 30))
+    folha = pygame.transform.scale(pygame.image.load('folha.png').convert_alpha(), (30, 30))
+    caderno = pygame.transform.scale(pygame.image.load('caderno.png').convert_alpha(), (40, 40))
+    postit = pygame.transform.scale(pygame.image.load('postit.png').convert_alpha(), (40, 40))
     # Branco - orgânico
-    banana = pygame.transform.scale(pygame.image.load('banana.png').convert_alpha(), (30, 40))
+    banana = pygame.transform.scale(pygame.image.load('banana.png').convert_alpha(), (35, 35))
     maca = pygame.transform.scale(pygame.image.load('maca.png').convert_alpha(), (40, 40))
     laranja = pygame.transform.scale(pygame.image.load('laranja.png').convert_alpha(), (40, 40))
     # Verde - reciclável
-    cebolitos = pygame.transform.scale(pygame.image.load('cebolitos.png').convert_alpha(), (40, 60))
-    latinha = pygame.transform.scale(pygame.image.load('latinha.png').convert_alpha(), (40, 40))
-    garrafapet = pygame.transform.scale(pygame.image.load('garrafapet.png').convert_alpha(), (40, 50))
+    cebolitos = pygame.transform.scale(pygame.image.load('cebolitos.png').convert_alpha(), (40, 40))
+    latinha = pygame.transform.scale(pygame.image.load('latinha.png').convert_alpha(), (30, 30))
+    garrafapet = pygame.transform.scale(pygame.image.load('garrafapet.png').convert_alpha(), (50, 50))
     # Preto - rejeito
-    copo = pygame.transform.scale(pygame.image.load('copo.png').convert_alpha(), (40, 50))
+    copo = pygame.transform.scale(pygame.image.load('copo.png').convert_alpha(), (30, 30))  ## ESSE TA GRANDE
     guardanapo = pygame.transform.scale(pygame.image.load('guardanapo.png').convert_alpha(), (40, 40))
-    fita = pygame.transform.scale(pygame.image.load('fita.png').convert_alpha(), (50, 40))
+    fita = pygame.transform.scale(pygame.image.load('fita.png').convert_alpha(), (40, 40))
 
     # Botão voltar pra o jogo
     btn_voltar_img = pygame.image.load('btn.png')
@@ -268,7 +268,7 @@ def jogar():
                 elif event.key == pygame.K_p or event.key == pygame.K_SPACE:
                     pause = True
                     while pause:
-                        mnsgnp = main_font.render(f"APERTE P PRA VOLTAR A JOGAR", 1, (0, 0, 255))
+                        mnsgnp = main_font.render(f"APERTE P PRA VOLTAR A JOGAR", 1, (0, 0, 0))
                         screen.blit(mnsgnp, (400 - (mnsgnp.get_width() / 2), 300))
                         pygame.display.update()
                         for event in pygame.event.get():
@@ -322,7 +322,7 @@ def jogar():
         # =-= Checando colisões =-= #
         for i, lixo in enumerate(lixos_imgs):
             if colisao_lixeira(arma_x, arma_y, lixo_x[i], lixo_y[i]):
-                screen.blit(lixo, (50, 50))
+                # screen.blit(lixo, (50, 50))
                 # Azul
                 if cor_arma == 0 and papeis.count(lixos_imgs[i]) == 1:
                     lixo_certo.play()
