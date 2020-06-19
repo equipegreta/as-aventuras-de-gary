@@ -24,12 +24,12 @@ main_font = pygame.font.Font("PressStart2P.ttf", 15)
 # =-= Menu =-= #
 def menu():
     # Imagem botões
-    titulo_img = pygame.image.load('titulo.png')
-    btn_jogar_img = pygame.image.load('btn.png')
-    btn_tutorial_img = pygame.image.load('btn.png')
-    btn_saiba_mais_img = pygame.image.load('btn.png')
-    btn_ranking_img = pygame.image.load('btn.png')
-    btn_creditos_img = pygame.image.load('btn.png')
+    titulo_img = pygame.transform.scale(pygame.image.load('titulo.png').convert_alpha(), (286, 50))
+    btn_jogar_img = pygame.transform.scale(pygame.image.load('jogar.png').convert_alpha(), (286, 50))
+    btn_tutorial_img = pygame.transform.scale(pygame.image.load('como_jogar.png').convert_alpha(), (286, 50))
+    btn_saiba_mais_img = pygame.transform.scale(pygame.image.load('saiba_mais.png').convert_alpha(), (286, 50))
+    btn_ranking_img = pygame.transform.scale(pygame.image.load('ranking.png').convert_alpha(), (286, 50))
+    btn_creditos_img = pygame.transform.scale(pygame.image.load('creditos.png').convert_alpha(), (286, 50))
 
     running = True
     while running:
