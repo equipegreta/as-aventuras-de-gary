@@ -478,7 +478,7 @@ def game_over(pont):
         ranking.close()
     running = True
     while running:
-
+        screen.blit(background, (0, 0))
         btn_voltar = pygame.Rect((257, 150), (286, 50))  # left, top, width, height
         pygame.draw.rect(screen, (255, 0, 0), btn_voltar)
 
