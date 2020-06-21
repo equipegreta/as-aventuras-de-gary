@@ -88,7 +88,54 @@ def menu():
                 sys.exit()
 
         pygame.display.update()
+def hscr():
+    var = True
+    while var:
+        global background
+        screen.fill((255, 255, 255))  # Branco
+        screen.blit(background, (0, 0))
+        input_box = pygame.Rect(225, 260, 350, 80)
+        main_font = pygame.font.Font("PressStart2P.ttf", 20)
+        color_inactive = pygame.Color('lightskyblue3')
+        color_active = pygame.Color('dodgerblue2')
+        cor = color_inactive
+        active = False
+        text = ''
+        while True:
+            mnsghsc1 = main_font.render(f"PONTUAÇÃO NO TOP 3!!!", 1, (0, 0, 255))
+            screen.blit(mnsghsc1, (400 - (mnsghsc1.get_width() / 2), 100))
+            mnsghsc2 = main_font.render(f"ENTRE SEU NOME:", 1, (0, 0, 255))
+            screen.blit(mnsghsc2, (400 - (mnsghsc2.get_width() / 2), 150))
+            for event in pygame.event.get():
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if input_box.collidepoint(event.pos):
+                        # caixa ativa.
+                        active = True
+                    else:
+                        active = False
+                    # Change the current color of the input box.
+                    cor = color_active if active else color_inactive
+                if event.type == pygame.KEYDOWN:
+                    if active:
+                        if event.key == pygame.K_RETURN:
+                            var = False
+                            return text
+                        elif event.key == pygame.K_BACKSPACE:
+                            text = text[:-1]
+                        else:
+                            text += event.unicode
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
 
+            # Render the current text.
+            txt_surface = main_font.render(text, 1, (0, 0, 255))
+            # Blit the text.
+            screen.blit(txt_surface, (input_box.x + 5, input_box.y + 5))
+            # Blit the input_box rect.
+            pygame.draw.rect(screen, cor, input_box, 2)
+
+            pygame.display.update()
 
 # =-= Jogo =-= #
 def jogar():
@@ -383,7 +430,7 @@ def jogar():
 
         if contagem_vidas == 0:
             perdeu.play()
-            game_over()
+            game_over(pontuacao)
 
         # Atenção: Nada aparece se não tiver a função update!
         # Se não tiver, a tela não atualiza
@@ -391,10 +438,44 @@ def jogar():
 
 
 # =-= Fim de jogo =-= #
-def game_over():
+def game_over(pont):
     btn_voltar_img = pygame.image.load('btn.png')
     # Sons
-
+    leia = True
+    while leia :
+        try:
+            ranking = open("top3.txt", 'r', encoding='utf8')
+            copia_rk = ranking.readlines()
+            ranking.close()
+            leia = False
+        except FileNotFoundError:
+            ranking = open("top3.txt", 'w', encoding='utf8')
+            for i in range(0, 6):
+                ranking.write(str(0)+'\n')
+            ranking.close()
+    if pont > int(copia_rk[4]):
+        if pont > int(copia_rk[0]):
+            # 1°
+            copia_rk[4] = copia_rk[2]
+            copia_rk[5] = copia_rk[3]
+            copia_rk[2] = copia_rk[0]
+            copia_rk[3] = copia_rk[1]
+            copia_rk[0] = str(pont)+'\n'
+            copia_rk[1] = hscr()+'\n'
+        elif pont > int(copia_rk[2]):
+            # 2°
+            copia_rk[4] = copia_rk[2]
+            copia_rk[5] = copia_rk[3]
+            copia_rk[2] = str(pont)+'\n'
+            copia_rk[3] = hscr()+'\n'
+        elif pont > int(copia_rk[4]):
+            # 3°
+            copia_rk[4] = str(pont)+'\n'
+            copia_rk[5] = hscr()+'\n'
+        ranking = open("top3.txt", 'w', encoding='utf8')
+        for i in range(0, 6):
+            ranking.write(copia_rk[i])
+        ranking.close()
     running = True
     while running:
 
