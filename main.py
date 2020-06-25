@@ -8,15 +8,15 @@ pygame.init()
 
 # =-= Tamanho da tela =-= #
 screen = pygame.display.set_mode((800, 600))
-
-# =-= Imagem do background =-= #
 background = pygame.transform.scale(pygame.image.load('fundo.png'), (800, 600))
 
 # =-= Título e ícone =-= #
-pygame.display.set_caption("Título")
+pygame.display.set_caption("As Aventuras de Gary")
 icon = pygame.image.load('icone.png')
 pygame.display.set_icon(icon)
 
+
+# =-= Imagem do background =-= #
 # Fontes
 main_font = pygame.font.Font("PressStart2P.ttf", 15)
 
@@ -72,7 +72,7 @@ def menu():
         if btn_saiba_mais.collidepoint((mouse_x, mouse_y)):
             for event in pygame.event.get():
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    pass
+                    saiba_mais()
         if btn_ranking.collidepoint((mouse_x, mouse_y)):
             for event in pygame.event.get():
                 if event.type == pygame.MOUSEBUTTONDOWN:
@@ -80,7 +80,7 @@ def menu():
         if btn_creditos.collidepoint((mouse_x, mouse_y)):
             for event in pygame.event.get():
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    pass
+                    creditos()
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -88,6 +88,81 @@ def menu():
                 sys.exit()
 
         pygame.display.update()
+
+
+def saiba_mais():
+    imagem_fundo = pygame.image.load('fundo_saiba_mais.png')
+    btn_voltar_img = pygame.transform.scale(pygame.image.load('btn-voltar.png').convert_alpha(), (50, 50))
+    img_y = 0
+    img_y_deslocamento = 0
+
+    running = True
+    while running:
+        screen.blit(imagem_fundo, (0, img_y))
+        img_y = img_y + img_y_deslocamento
+
+        btn_voltar = pygame.Rect((20, 20), (50, 50))
+
+        mouse_x, mouse_y = pygame.mouse.get_pos()
+
+        pygame.draw.rect(screen, (255, 0, 0), btn_voltar)
+        screen.blit(btn_voltar_img, (20, 20))
+
+        if btn_voltar.collidepoint((mouse_x, mouse_y)):
+            for event in pygame.event.get():
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    menu()
+
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_DOWN:
+                    img_y_deslocamento = -8
+                elif event.key == pygame.K_UP:
+                    img_y_deslocamento = +8
+            elif event.type == pygame.KEYUP:
+                if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
+                    img_y_deslocamento = 0
+            elif event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+        if img_y > 1:
+            img_y = 0
+        elif img_y < -1800:
+            img_y = -1800
+
+        pygame.display.update()
+
+
+def creditos():
+    imagem_fundo = pygame.image.load('desenvolvedores.png')
+    btn_voltar_img = pygame.transform.scale(pygame.image.load('btn-voltar.png').convert_alpha(), (50, 50))
+
+    running = True
+    while running:
+        screen.blit(imagem_fundo, (0, 0))
+
+        btn_voltar = pygame.Rect((20, 20), (50, 50))
+
+        mouse_x, mouse_y = pygame.mouse.get_pos()
+
+        pygame.draw.rect(screen, (255, 0, 0), btn_voltar)
+        screen.blit(btn_voltar_img, (20, 20))
+
+        if btn_voltar.collidepoint((mouse_x, mouse_y)):
+            for event in pygame.event.get():
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    menu()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+        pygame.display.update()
+
+
+# =-= High Score =-= #
 def hscr():
     var = True
     while var:
@@ -136,6 +211,7 @@ def hscr():
             pygame.draw.rect(screen, cor, input_box, 2)
 
             pygame.display.update()
+
 
 # =-= Jogo =-= #
 def jogar():
@@ -191,7 +267,7 @@ def jogar():
     latinha = pygame.transform.scale(pygame.image.load('latinha.png').convert_alpha(), (30, 30))
     garrafapet = pygame.transform.scale(pygame.image.load('garrafapet.png').convert_alpha(), (50, 50))
     # Preto - rejeito
-    copo = pygame.transform.scale(pygame.image.load('copo.png').convert_alpha(), (30, 30))  ## ESSE TA GRANDE
+    copo = pygame.transform.scale(pygame.image.load('copo.png').convert_alpha(), (30, 30))
     guardanapo = pygame.transform.scale(pygame.image.load('guardanapo.png').convert_alpha(), (40, 40))
     fita = pygame.transform.scale(pygame.image.load('fita.png').convert_alpha(), (40, 40))
 
@@ -439,10 +515,10 @@ def jogar():
 
 # =-= Fim de jogo =-= #
 def game_over(pont):
-    btn_voltar_img = pygame.image.load('btn.png')
-    # Sons
+
+    # Salvando no ranking
     leia = True
-    while leia :
+    while leia:
         try:
             ranking = open("top3.txt", 'r', encoding='utf8')
             copia_rk = ranking.readlines()
@@ -451,7 +527,7 @@ def game_over(pont):
         except FileNotFoundError:
             ranking = open("top3.txt", 'w', encoding='utf8')
             for i in range(0, 6):
-                ranking.write(str(0)+'\n')
+                ranking.write(str(0) + '\n')
             ranking.close()
     if pont > int(copia_rk[4]):
         if pont > int(copia_rk[0]):
@@ -460,40 +536,45 @@ def game_over(pont):
             copia_rk[5] = copia_rk[3]
             copia_rk[2] = copia_rk[0]
             copia_rk[3] = copia_rk[1]
-            copia_rk[0] = str(pont)+'\n'
-            copia_rk[1] = hscr()+'\n'
+            copia_rk[0] = str(pont) + '\n'
+            copia_rk[1] = hscr() + '\n'
         elif pont > int(copia_rk[2]):
             # 2°
             copia_rk[4] = copia_rk[2]
             copia_rk[5] = copia_rk[3]
-            copia_rk[2] = str(pont)+'\n'
-            copia_rk[3] = hscr()+'\n'
+            copia_rk[2] = str(pont) + '\n'
+            copia_rk[3] = hscr() + '\n'
         elif pont > int(copia_rk[4]):
             # 3°
-            copia_rk[4] = str(pont)+'\n'
-            copia_rk[5] = hscr()+'\n'
+            copia_rk[4] = str(pont) + '\n'
+            copia_rk[5] = hscr() + '\n'
         ranking = open("top3.txt", 'w', encoding='utf8')
         for i in range(0, 6):
             ranking.write(copia_rk[i])
         ranking.close()
+
+    btn_menu_img = pygame.transform.scale(pygame.image.load('btn_menu.png').convert_alpha(), (200, 77))
+    game_over_img = pygame.transform.scale(pygame.image.load('game_over.png').convert_alpha(), (300, 161))
     running = True
     while running:
-        screen.blit(background, (0, 0))
-        btn_voltar = pygame.Rect((257, 150), (286, 50))  # left, top, width, height
-        pygame.draw.rect(screen, (255, 0, 0), btn_voltar)
 
-        screen.blit(btn_voltar_img, (257, 150))
+        screen.blit(background, (0, 0))
+
+        # Botão voltar pra o menu
+        btn_menu = pygame.Rect((305, 322), (190, 73))  # left, top, width, height
+        pygame.draw.rect(screen, (255, 0, 0), btn_menu)
+        screen.blit(btn_menu_img, (400 - (btn_menu_img.get_width() / 2), 320))
+        # Imagem game over
+        screen.blit(game_over_img, (400 - (game_over_img.get_width() / 2), 100))
 
         # Pegando o clique do mouse
         mouse_x, mouse_y = pygame.mouse.get_pos()
 
-        if btn_voltar.collidepoint((mouse_x, mouse_y)):
+        if btn_menu.collidepoint((mouse_x, mouse_y)):
             for event in pygame.event.get():
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     menu()
 
-        mnsgngo = main_font.render(f"PERDEU!!!", 1, (0, 0, 255))
-        screen.blit(mnsgngo, (400 - (mnsgngo.get_width() / 2), 300))
         pygame.display.update()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
