@@ -407,11 +407,11 @@ def jogar():
 
         # =-= Chamando a função que gera os lixos =-= #
         try:
-            if lixo_y[-1] > 60:
-                if random.randrange(0, 150) == 1:
+            if lixo_y[-1] > 90:
+                if random.randrange(0, abs(150-pontuacao)) == 1:
                     gerar_lixo()
         except IndexError:
-            if random.randrange(0, 150) == 1:
+            if random.randrange(0, 190) == 1:
                 gerar_lixo()
         for i in range(len(lixos_imgs)):
             lixo_y[i] += lixo_y_deslocamento[i]
@@ -527,7 +527,7 @@ def game_over(pont):
         except FileNotFoundError:
             ranking = open("top3.txt", 'w', encoding='utf8')
             for i in range(0, 6):
-                ranking.write(str(0) + '\n')
+                ranking.write('0\n')
             ranking.close()
     if pont > int(copia_rk[4]):
         if pont > int(copia_rk[0]):
