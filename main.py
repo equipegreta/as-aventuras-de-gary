@@ -24,7 +24,7 @@ main_font = pygame.font.Font("PressStart2P.ttf", 15)
 # =-= Menu =-= #
 def menu():
     # Imagem botões
-    titulo_img = pygame.transform.scale(pygame.image.load('titulo.png').convert_alpha(), (280, 207))
+    titulo_img = pygame.transform.scale(pygame.image.load('titulo.png').convert_alpha(), (400, 188))
     btn_jogar_img = pygame.transform.scale(pygame.image.load('jogar.png').convert_alpha(), (286, 50))
     btn_tutorial_img = pygame.transform.scale(pygame.image.load('como_jogar.png').convert_alpha(), (286, 50))
     btn_saiba_mais_img = pygame.transform.scale(pygame.image.load('saiba_mais.png').convert_alpha(), (286, 50))
@@ -51,7 +51,7 @@ def menu():
         pygame.draw.rect(screen, (255, 0, 0), btn_creditos)
 
         # Imprimindo as imagens do titulo e dos botões
-        screen.blit(titulo_img, (257, 10))
+        screen.blit(titulo_img, (195, 10))
         screen.blit(btn_jogar_img, (257, 220))
         screen.blit(btn_tutorial_img, (257, 290))
         screen.blit(btn_saiba_mais_img, (257, 360))
