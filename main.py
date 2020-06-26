@@ -24,7 +24,7 @@ main_font = pygame.font.Font("PressStart2P.ttf", 15)
 # =-= Menu =-= #
 def menu():
     # Imagem botões
-    titulo_img = pygame.transform.scale(pygame.image.load('titulo.png').convert_alpha(), (286, 50))
+    titulo_img = pygame.transform.scale(pygame.image.load('titulo.png').convert_alpha(), (280, 207))
     btn_jogar_img = pygame.transform.scale(pygame.image.load('jogar.png').convert_alpha(), (286, 50))
     btn_tutorial_img = pygame.transform.scale(pygame.image.load('como_jogar.png').convert_alpha(), (286, 50))
     btn_saiba_mais_img = pygame.transform.scale(pygame.image.load('saiba_mais.png').convert_alpha(), (286, 50))
@@ -38,11 +38,11 @@ def menu():
         screen.blit(background, (0, 0))
 
         # Definindo onde estão os botões
-        btn_jogar = pygame.Rect((257, 150), (286, 50))  # left, top, width, height
-        btn_tutorial = pygame.Rect((257, 220), (286, 50))
-        btn_saiba_mais = pygame.Rect((257, 290), (286, 50))
-        btn_ranking = pygame.Rect((257, 360), (286, 50))
-        btn_creditos = pygame.Rect((257, 430), (286, 50))
+        btn_jogar = pygame.Rect((257, 225), (286, 45))  # left, top, width, height
+        btn_tutorial = pygame.Rect((257, 295), (286, 45))
+        btn_saiba_mais = pygame.Rect((257, 365), (286, 45))
+        btn_ranking = pygame.Rect((257, 435), (286, 45))
+        btn_creditos = pygame.Rect((257, 505), (286, 45))
 
         pygame.draw.rect(screen, (255, 0, 0), btn_jogar)
         pygame.draw.rect(screen, (255, 0, 0), btn_tutorial)
@@ -51,12 +51,12 @@ def menu():
         pygame.draw.rect(screen, (255, 0, 0), btn_creditos)
 
         # Imprimindo as imagens do titulo e dos botões
-        screen.blit(titulo_img, (257, 50))
-        screen.blit(btn_jogar_img, (257, 150))
-        screen.blit(btn_tutorial_img, (257, 220))
-        screen.blit(btn_saiba_mais_img, (257, 290))
-        screen.blit(btn_ranking_img, (257, 360))
-        screen.blit(btn_creditos_img, (257, 430))
+        screen.blit(titulo_img, (257, 10))
+        screen.blit(btn_jogar_img, (257, 220))
+        screen.blit(btn_tutorial_img, (257, 290))
+        screen.blit(btn_saiba_mais_img, (257, 360))
+        screen.blit(btn_ranking_img, (257, 430))
+        screen.blit(btn_creditos_img, (257, 500))
 
         # Pegando o clique do mouse
         mouse_x, mouse_y = pygame.mouse.get_pos()
@@ -68,7 +68,7 @@ def menu():
         if btn_tutorial.collidepoint((mouse_x, mouse_y)):
             for event in pygame.event.get():
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    pass
+                    como_jogar()
         if btn_saiba_mais.collidepoint((mouse_x, mouse_y)):
             for event in pygame.event.get():
                 if event.type == pygame.MOUSEBUTTONDOWN:
@@ -76,11 +76,68 @@ def menu():
         if btn_ranking.collidepoint((mouse_x, mouse_y)):
             for event in pygame.event.get():
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    pass
+                    ranking()
         if btn_creditos.collidepoint((mouse_x, mouse_y)):
             for event in pygame.event.get():
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     creditos()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+        pygame.display.update()
+
+
+def como_jogar():
+    imagem_tutorial = pygame.image.load('comojogar.png')
+    btn_voltar_img = pygame.transform.scale(pygame.image.load('btn-voltar.png').convert_alpha(), (50, 50))
+
+    running = True
+    while running:
+        screen.blit(imagem_tutorial, (0, 0))
+
+        btn_voltar = pygame.Rect((20, 20), (50, 50))
+
+        mouse_x, mouse_y = pygame.mouse.get_pos()
+
+        pygame.draw.rect(screen, (255, 0, 0), btn_voltar)
+        screen.blit(btn_voltar_img, (20, 20))
+
+        if btn_voltar.collidepoint((mouse_x, mouse_y)):
+            for event in pygame.event.get():
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    menu()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+        pygame.display.update()
+
+
+def ranking():
+    screen.blit(background, (0, 0))
+    ranking_img = pygame.image.load('ranking_fundo.png')
+    btn_voltar_img = pygame.transform.scale(pygame.image.load('btn-voltar.png').convert_alpha(), (50, 50))
+
+    running = True
+    while running:
+        screen.blit(ranking_img, ((800 - ranking_img.get_width())/2, 150))
+
+        btn_voltar = pygame.Rect((20, 20), (50, 50))
+
+        mouse_x, mouse_y = pygame.mouse.get_pos()
+
+        pygame.draw.rect(screen, (255, 0, 0), btn_voltar)
+        screen.blit(btn_voltar_img, (20, 20))
+
+        if btn_voltar.collidepoint((mouse_x, mouse_y)):
+            for event in pygame.event.get():
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    menu()
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
