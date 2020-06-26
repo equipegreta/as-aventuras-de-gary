@@ -1,6 +1,6 @@
-5
+200
 ANA
-2
-ana
-0
-0
+100
+carina
+80
+juliana

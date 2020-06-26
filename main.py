@@ -122,6 +122,8 @@ def ranking():
     screen.blit(background, (0, 0))
     ranking_img = pygame.image.load('ranking_fundo.png')
     btn_voltar_img = pygame.transform.scale(pygame.image.load('btn-voltar.png').convert_alpha(), (50, 50))
+    main_font = pygame.font.Font("PressStart2P.ttf", 40)
+    small_font = pygame.font.Font("PressStart2P.ttf", 20)
 
     running = True
     while running:
@@ -133,6 +135,20 @@ def ranking():
 
         pygame.draw.rect(screen, (255, 0, 0), btn_voltar)
         screen.blit(btn_voltar_img, (20, 20))
+
+        titulo_ranking = main_font.render(f"RANKING", 1, (0, 0, 0))
+        screen.blit(titulo_ranking, (400 - (titulo_ranking.get_width() / 2), 100))
+
+        arquivo_ranking = open('top3.txt', 'r', encoding='utf8')
+        colocacao = []
+        for linha in arquivo_ranking:
+            colocacao.append(linha.strip().upper())
+        primeiro_colocado = small_font.render(f"{colocacao[1][:3]}       {colocacao[0].zfill(5)} ", 1, (0, 0, 0))
+        screen.blit(primeiro_colocado, (300, 210))
+        segundo_colocado = small_font.render(f"{colocacao[3][:3]}       {colocacao[2].zfill(5)}", 1, (0, 0, 0))
+        screen.blit(segundo_colocado, (300, 305))
+        terceiro_colocado = small_font.render(f"{colocacao[5][:3]}       {colocacao[4].zfill(5)}", 1, (0, 0, 0))
+        screen.blit(terceiro_colocado, (300, 400))
 
         if btn_voltar.collidepoint((mouse_x, mouse_y)):
             for event in pygame.event.get():
