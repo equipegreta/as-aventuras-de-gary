@@ -481,7 +481,7 @@ def jogar():
         # =-= Chamando a função que gera os lixos =-= #
         try:
             if lixo_y[-1] > 90:
-                if random.randrange(0, abs(150-pontuacao)) == 1:
+                if random.randrange(-1, abs(150-pontuacao)) == 1:
                     gerar_lixo()
         except IndexError:
             if random.randrange(0, 190) == 1:
