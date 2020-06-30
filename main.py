@@ -236,7 +236,7 @@ def creditos():
 
 
 # =-= High Score =-= #
-def hscr():
+def hscr(pont):
     var = True
     while var:
         global background
@@ -244,6 +244,8 @@ def hscr():
         screen.blit(background, (0, 0))
         input_box = pygame.Rect(225, 260, 350, 80)
         main_font = pygame.font.Font("PressStart2P.ttf", 20)
+        pont_label = main_font.render(f"PONTUAÇÃO: {pont}".zfill(7), 1, (0, 0, 0))
+        screen.blit(pont_label, (400-(pont_label.get_width() / 2), 480))
         color_inactive = pygame.Color('lightskyblue3')
         color_active = pygame.Color('dodgerblue2')
         cor = color_inactive
@@ -464,9 +466,57 @@ def jogar():
                 elif event.key == pygame.K_p or event.key == pygame.K_SPACE:
                     pause = True
                     while pause:
+                        screen.blit(background, (0, 0))
+                        btn_menu_img = pygame.transform.scale(pygame.image.load('btn_menu.png').convert_alpha(),
+                                                              (200, 77))
+                        btn_menu = pygame.Rect((305, 180), (190, 73))  # left, top, width, height
+                        pygame.draw.rect(screen, (255, 0, 0), btn_menu)
+                        screen.blit(btn_menu_img, (400 - (btn_menu_img.get_width() / 2), 178))
+                        btn_tutorial_img = pygame.transform.scale(pygame.image.load('como_jogar.png').convert_alpha(),
+                                                                  (286, 50))
+                        btn_tutorial = pygame.Rect((257, 100), (286, 45))
+                        pygame.draw.rect(screen, (255, 0, 0), btn_tutorial)
+                        screen.blit(btn_tutorial_img, (257, 95))
                         mnsgnp = main_font.render(f"APERTE P PRA VOLTAR A JOGAR", 1, (0, 0, 0))
                         screen.blit(mnsgnp, (400 - (mnsgnp.get_width() / 2), 300))
                         pygame.display.update()
+                        mouse_x, mouse_y = pygame.mouse.get_pos()
+                        if btn_menu.collidepoint((mouse_x, mouse_y)):
+                            for event in pygame.event.get():
+                                if event.type == pygame.MOUSEBUTTONDOWN:
+                                    menu()
+                        if btn_tutorial.collidepoint((mouse_x, mouse_y)):
+                            for event in pygame.event.get():
+                                if event.type == pygame.MOUSEBUTTONDOWN:
+                                    imagem_tutorial = pygame.image.load('comojogar.png')
+                                    btn_voltar_img = pygame.transform.scale(
+                                        pygame.image.load('btn-voltar.png').convert_alpha(), (50, 50))
+
+                                    tut = True
+                                    while tut:
+                                        screen.blit(imagem_tutorial, (0, 0))
+
+                                        btn_voltar = pygame.Rect((20, 20), (50, 50))
+
+                                        mouse_x, mouse_y = pygame.mouse.get_pos()
+
+                                        pygame.draw.rect(screen, (255, 0, 0), btn_voltar)
+                                        screen.blit(btn_voltar_img, (20, 20))
+
+                                        if btn_voltar.collidepoint((mouse_x, mouse_y)):
+                                            for event in pygame.event.get():
+                                                if event.type == pygame.MOUSEBUTTONDOWN:
+                                                    tut = False
+                                                    break
+
+                                        for event in pygame.event.get():
+                                            if event.type == pygame.QUIT:
+                                                pygame.quit()
+                                                sys.exit()
+
+                                        pygame.display.update()
+
+
                         for event in pygame.event.get():
                             if event.type == pygame.QUIT:
                                 pygame.quit()
@@ -475,16 +525,17 @@ def jogar():
                                 if event.key == pygame.K_p:
                                     pause = False
 
+
         arma_x += arma_x_deslocamento
         player_x += player_x_deslocamento
 
         # =-= Chamando a função que gera os lixos =-= #
         try:
             if lixo_y[-1] > 90:
-                if random.randrange(-1, abs(150-pontuacao)) == 1:
+                if random.randrange(-1, abs(130-pontuacao)) == 1:
                     gerar_lixo()
         except IndexError:
-            if random.randrange(0, 190) == 1:
+            if random.randrange(0, 150) == 1:
                 gerar_lixo()
         for i in range(len(lixos_imgs)):
             lixo_y[i] += lixo_y_deslocamento[i]
@@ -554,6 +605,8 @@ def jogar():
                 # Se coletar um lixo na lixeira errada
                 else:
                     lixo_errado.play()
+                    if pontuacao > 0 :
+                        pontuacao -= 1
                     lixos_imgs.pop(i)
                     lixo_x.pop(i)
                     lixo_y.pop(i)
@@ -610,29 +663,29 @@ def game_over(pont):
             copia_rk[2] = copia_rk[0]
             copia_rk[3] = copia_rk[1]
             copia_rk[0] = str(pont) + '\n'
-            copia_rk[1] = hscr() + '\n'
+            copia_rk[1] = hscr(pont) + '\n'
         elif pont > int(copia_rk[2]):
             # 2°
             copia_rk[4] = copia_rk[2]
             copia_rk[5] = copia_rk[3]
             copia_rk[2] = str(pont) + '\n'
-            copia_rk[3] = hscr() + '\n'
+            copia_rk[3] = hscr(pont) + '\n'
         elif pont > int(copia_rk[4]):
             # 3°
             copia_rk[4] = str(pont) + '\n'
-            copia_rk[5] = hscr() + '\n'
+            copia_rk[5] = hscr(pont) + '\n'
         ranking = open("top3.txt", 'w', encoding='utf8')
         for i in range(0, 6):
             ranking.write(copia_rk[i])
         ranking.close()
-
+    pont_label = main_font.render(f"PONTUAÇÃO: {pont}".zfill(7), 1, (0, 0, 0))
     btn_menu_img = pygame.transform.scale(pygame.image.load('btn_menu.png').convert_alpha(), (200, 77))
     game_over_img = pygame.transform.scale(pygame.image.load('game_over.png').convert_alpha(), (300, 161))
     running = True
     while running:
 
         screen.blit(background, (0, 0))
-
+        screen.blit(pont_label, (400-(pont_label.get_width() / 2), 480))
         # Botão voltar pra o menu
         btn_menu = pygame.Rect((305, 322), (190, 73))  # left, top, width, height
         pygame.draw.rect(screen, (255, 0, 0), btn_menu)
