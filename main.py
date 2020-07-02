@@ -332,7 +332,7 @@ def jogar():
     # Azul - papel
     folha = pygame.transform.scale(pygame.image.load('folha.png').convert_alpha(), (30, 30))
     caderno = pygame.transform.scale(pygame.image.load('caderno.png').convert_alpha(), (40, 40))
-    postit = pygame.transform.scale(pygame.image.load('postit.png').convert_alpha(), (40, 40))
+    postit = pygame.transform.scale(pygame.image.load('postit.png').convert_alpha(), (30, 30))
     # Branco - orgânico
     banana = pygame.transform.scale(pygame.image.load('banana.png').convert_alpha(), (35, 35))
     maca = pygame.transform.scale(pygame.image.load('maca.png').convert_alpha(), (40, 40))

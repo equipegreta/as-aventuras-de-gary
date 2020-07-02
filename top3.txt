@@ -1,6 +1,6 @@
-200
-ANA
-100
-carina
-80
-juliana
+54
+ana
+30
+jao
+10
+bia
